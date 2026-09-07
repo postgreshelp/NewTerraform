@@ -1,4 +1,4 @@
-output "default_vpc_id" {
-  description = "ID of the existing default VPC"
-  value       = data.aws_vpc.default.id
+output "new_vpc_id" {
+  description = "ID of the newly created VPC"
+  value       = aws_vpc.new_vpc.id
 }

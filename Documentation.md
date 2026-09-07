@@ -197,4 +197,124 @@ Then put this inside it:
 *.code-workspace
 ```
 
+Now run below commands
 
+```
+cd C:\Users\hp\Documents\Course\NewTerraform
+
+Remove-Item -Recurse -Force .git
+
+git init
+
+git config user.name "Y_USER_NAME"
+git config user.email "Y_USER_EMAIL"
+
+git remote add origin https://github.com/postgreshelp/NewTerraform.git
+
+git add .
+
+git status
+
+git commit -m "Add Terraform VPC read and import examples"
+
+git branch -M master
+
+git push -u origin master
+
+```
+
+Sample log
+
+```
+PS C:\Users\hp\Documents\Course\NewTerraform>
+PS C:\Users\hp\Documents\Course\NewTerraform> cd C:\Users\hp\Documents\Course\NewTerraform
+PS C:\Users\hp\Documents\Course\NewTerraform> Remove-Item -Recurse -Force .git
+Remove-Item: Cannot find path 'C:\Users\hp\Documents\Course\NewTerraform\.git' because it does not exist.
+PS C:\Users\hp\Documents\Course\NewTerraform> git init
+Initialized empty Git repository in C:/Users/hp/Documents/Course/NewTerraform/.git/
+PS C:\Users\hp\Documents\Course\NewTerraform> git config user.name "postgreshelp"
+PS C:\Users\hp\Documents\Course\NewTerraform> git config user.email "postgreshelp@gmail.com"
+PS C:\Users\hp\Documents\Course\NewTerraform> git remote add origin https://github.com/postgreshelp/NewTerraform.git
+PS C:\Users\hp\Documents\Course\NewTerraform> git add .
+PS C:\Users\hp\Documents\Course\NewTerraform> git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   .gitignore
+        new file:   .terraform.lock.hcl
+        new file:   Documentation.md
+        new file:   aws-vpc.tf
+        new file:   data.tf
+        new file:   outputs.tf
+        new file:   providers.tf
+
+PS C:\Users\hp\Documents\Course\NewTerraform> git remote add origin https://github.com/postgreshelp/NewTerraform.git
+error: remote origin already exists.
+PS C:\Users\hp\Documents\Course\NewTerraform>
+PS C:\Users\hp\Documents\Course\NewTerraform> git commit -m "Add Terraform VPC read and import examples"
+[master (root-commit) 6e6d6c0] Add Terraform VPC read and import examples
+ 7 files changed, 258 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 .terraform.lock.hcl
+ create mode 100644 Documentation.md
+ create mode 100644 aws-vpc.tf
+ create mode 100644 data.tf
+ create mode 100644 outputs.tf
+ create mode 100644 providers.tf
+PS C:\Users\hp\Documents\Course\NewTerraform> git branch -M master
+PS C:\Users\hp\Documents\Course\NewTerraform> git push -u origin master
+Enumerating objects: 9, done.
+Counting objects: 100% (9/9), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (8/8), done.
+Writing objects: 100% (9/9), 3.31 KiB | 1.66 MiB/s, done.
+Total 9 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To https://github.com/postgreshelp/NewTerraform.git
+ * [new branch]      master -> master
+branch 'master' set up to track 'origin/master'.
+PS C:\Users\hp\Documents\Course\NewTerraform>
+```
+
+#### create a new vpc
+
+### aws-create-vpc.tf
+
+```
+resource "aws_vpc" "new_vpc" {
+  cidr_block = "10.20.0.0/16"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+
+  tags = {
+    Name = "NewTerraform-VPC"
+  }
+}
+```
+
+### outputs.tf
+```
+output "new_vpc_id" {
+  description = "ID of the newly created VPC"
+  value       = aws_vpc.new_vpc.id
+}
+```
+
+### run below commands
+
+```
+terraform fmt
+terraform validate
+terraform plan
+ ```
+
+ plan should show
+ ```
+ Plan: 1 to add, 0 to change, 0 to destroy.
+ ```
+
+```
+terraform apply
+```
